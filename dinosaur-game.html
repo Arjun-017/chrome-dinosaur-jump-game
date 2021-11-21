@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="refresh" content = 3000>
+	<meta charset="utf-8">
+	<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet"> 
+	<title>Dinosaur Jump Game</title>
+	<style type="text/css" media="screen">
+		#game{
+			position: absolute;
+			width: 800px;
+			height: 430px;
+			border: 3px solid black;
+			overflow: hidden;
+		}
+		#dino{
+			position: relative;
+			width: 60px;
+			height: 70px;
+			top: 330px;
+			left: 60px;
+			background-size: 60px 65px;
+			background-repeat: no-repeat;
+			background-position-y: 5px;
+			z-index: 100;
+			display: none;
+		}
+		.jump{
+			background-image: url('dino-images/dino_still.png');
+			animation: jump 0.5s linear;
+		}
+		#cactus1{
+			position: relative;
+			width: 30px;
+			height: 60px;
+			background-image: url('dino-images/cactus.png');
+			background-size: 30px 65px;
+			top: 270px;
+			left: 800px;
+			z-index: 0;
+			display: none;
+			
+		}
+		#cactus2{
+			position: relative;
+			width: 30px;
+			height: 60px;
+			background-image: url('dino-images/cactus.png');
+			background-size: 30px 65px;
+			top: 210px;
+			left: 800px;
+			z-index: 0;
+			display: none;
+			
+		}
+		.move{
+			animation: move 2s linear;
+		}
+		.move1{
+			animation: move 1.5s linear;
+		}
+		.move1{
+			animation: move 1s linear;
+		}
+		.move1{
+			animation: move 0.5s linear;
+		}
+		#banner{
+			position: absolute;
+			display: block;
+			top: 100px;
+			left: 150px;
+			width: 500px;
+			height: 250px;
+			text-align: center;
+			background-color: black;
+			color: white;
+			overflow: hidden;
+		}
+		#start{
+			font-family: 'Press Start 2P', cursive;
+			font-size: 50px;
+			position: relative;
+			top: 0px;
+		}
+		#play-button{
+			position: relative;
+			margin: 0px auto;
+			top: -35px;
+			width: 90px;
+			height: 90px;
+			background-image: url('dino-images/play2.png');
+      		background-size: 90px 90px;
+      		transition: 0.3s;
+		}
+		#play-button:hover{
+			transform: scale(1.1);
+			cursor: pointer;
+			margin: 0px auto;
+		}
+		#scoreboard1{
+			position: absolute;
+			width: 150px;
+			height: 40px;
+			top: 20px;
+			left: 650px;
+			border: 1px;
+		}
+
+		#scoreboard2{
+			position: absolute;
+			width: 150px;
+			height: 40px;
+			top: 20px;
+			left: 650px;
+			border: 1px;
+			display: none;
+		}
+		#scoredisplay1{
+			font-family: 'Press Start 2P', cursive;
+			font-size: 15px;
+			text-align: center;
+			z-index: 10;
+		}
+
+		#scoredisplay2{
+			font-family: 'Press Start 2P', cursive;
+			font-size: 15px;
+			text-align: center;
+			display: none;
+			z-index: 10;
+		}
+		#gameover{
+			position: absolute;
+			top: 100px;
+			left: 150px;
+			margin: 0px auto;
+			width: 500px;
+			height: 250px;
+			color: white;
+			background-color: black;
+			display: none;
+		}
+		#gameoverdisplay{
+			font-family: 'Press Start 2P', cursive;
+			font-size: 50px;
+			position: relative;
+			top: 40px;
+			color: white;
+			text-align: center;
+		}
+		#floor{
+			position: absolute;
+			width: 100%;
+			height: 40px;
+			left: 0px;
+			top: 360px;
+			background-image: url('dino-images/floor.gif');
+			background-position: center;
+			z-index: -50;
+		}
+		#cloud{
+			position: absolute;
+			width: 90px;
+			height: 60px;
+			background-image: url('dino-images/cloud.png');
+			background-repeat: no-repeat;
+			background-size: 90px 50px;
+			background-position: center;
+			animation: move 4s linear infinite;
+			display: none;
+			z-index: -10;
+		}
+		@keyframes move{
+			from{left:770px;}
+			to{left:0px;}
+		}
+		@keyframes jump{
+			0%{top:330px;}
+			40%{top:200px;}
+			50%{top:160px;}
+			60%{top:200px;}
+			100%{top:330px;}
+		} 
+	</style>
+</head>
+<body>
+	<div id="game">
+		<div id="dino"></div>
+		<div id="cactus1"></div>
+		<div id="cactus2"></div>
+		<div id="banner">
+			<h1 id="start">Start Game</h1>
+			<div id="play-button" onclick = "startGame();"></div>
+		</div>
+		<div id="scoreboard1"><h1 id="scoredisplay1"></h1></div>
+		<div id="scoreboard2"><h1 id="scoredisplay2"></h1></div>
+		<div id="gameover"><h1 id="gameoverdisplay">Game<br>Over</h1></div>
+		<div id="floor">		
+		</div>
+		<div id="cloud"></div>
+	</div>
+	<script>
+	const dino = document.getElementById('dino');
+    const cactus2 = document.getElementById('cactus2');
+    const banner = document.getElementById("banner");
+    const display = document.getElementById("scoredisplay1");
+    const endgame = document.getElementById("gameover");
+    const endgametext = document.getElementById("gameoverdisplay");
+    const display1 = document.getElementById("scoredisplay2");
+    const scoreboard = document.getElementById("scoreboard2");
+    const cloud = document.getElementById("cloud");
+    var d = 0;
+    var imgArray = new Array();
+	imgArray[0] = new Image();
+	imgArray[0].src = 'dino-images/dino_run_1.png';
+	imgArray[1] = new Image();
+	imgArray[1].src = 'dino-images/dino_run_2.png';
+	var imgIndex = 0;
+	var jumping = 0;
+	var cactus1_pos = 0;
+	var cactus2_pos = 0;
+	var gameOver = false;
+	var score = 0;
+	var cloud_pos = 0;
+	var gameSpeed = 0;
+    document.addEventListener('keydown',function(keycode){
+      jump();
+	});
+	function cloudMove(){
+    cloud.addEventListener('animationiteration',() => {
+		cloud_pos = Math.floor(Math.random()*300);
+		cloud.style.top = cloud_pos+'px';
+		console.log(t)
+	});
+	}
+    function jump(){
+     
+      if(dino.classList != "jump"){
+      dino.classList.add("jump");
+      setTimeout(function(){
+        dino.classList.remove("jump");
+        jumping = 1;
+      },510);
+      }
+    }
+    function startGame(){
+    	banner.style.display = "none";
+    	dino.style.display = "block";
+    	cactus1.style.display = "block";
+    	cactus2.style.display = "block";
+    	cloud.style.display = "block";
+
+    	var run = setInterval(running,100);
+    	var coll = setInterval(checkCollision,100);
+    	var check = setInterval(checkGameOver,100);
+    	var scoredisplay = setInterval(displayScore,100);
+
+    	cloudMove();
+    	gameLoop();
+    	
+    } 
+  
+    	function running(){
+    	if(dino.classList == 'jump'){
+    		dino.style.backgroundImage = "url('dino-images/dino_still.png')";
+    		return;
+    	}
+    	if(imgIndex == 0){
+    		dino.style.backgroundImage = "url('dino-images/dino_run_1.png')";
+    		imgIndex = 1;
+    		return;
+    	}
+    	if(imgIndex == 1){
+    		dino.style.backgroundImage = "url('dino-images/dino_run_2.png')";
+    		imgIndex = 0;
+    		return;
+    	}
+    }
+    function checkCollision(){
+    	cactus1_pos = parseInt(window.getComputedStyle(cactus1).getPropertyValue("left"));
+
+    		cactus2_pos = parseInt(window.getComputedStyle(cactus2).getPropertyValue("left"));
+    		
+    		if((cactus1_pos<=120 && cactus1_pos>=60)||(cactus2_pos<=120 && cactus2_pos>=60)){
+    			if(dino.classList != "jump"){
+    			gameOver = true;
+    			console.log(cactus1_pos,cactus2_pos);
+    		}
+    	}
+    }
+    function checkGameOver(){
+    	if(gameOver){
+    		gameOver = false;
+    		dino.style.display = 'none';
+    		cactus1.style.display = 'none';
+    		cactus2.style.display = 'none';
+			cloud.style.display = 'none';
+    		reStartGame();
+
+    		
+    	}
+    }
+    function displayScore(){
+    	score += 1;
+    	display.innerHTML = score;
+    }
+    function reStartGame(){
+    	endgame.style.display = "block";
+    	scoreboard.style.display = "block";
+    	display.style.display = 'none';
+    	display1.innerHTML = score;
+    	display1.style.display = "block";
+    	setTimeout(function(){
+    		location.reload();
+    	},3000);
+    	    }
+    function gameLoop(){
+    var game = setInterval(function(){
+    	d = (Math.random()*1)+0.5;
+    	d = Math.floor(d*1000);
+    		cactus1.classList.add("move");
+    	setTimeout(function(){
+    		cactus2.classList.add("move");
+    	},d);
+    	console.log(d);
+    	setTimeout(function(){cactus1.classList.remove("move");
+		},2010);
+		setTimeout(function(){cactus2.classList.remove("move");
+		},(d+2010));
+    	
+    	
+    },3510);
+}
+	</script>
+</body>
+</html>
